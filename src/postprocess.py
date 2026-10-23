@@ -73,7 +73,7 @@ NAME_TRIGGERS = ["my name is", "this is", "i am", "i'm", "regards", "thanks", "t
 
 def build_name_ctx(triggers):
     return re.compile(
-        r"(?:(?i:" + "|".join(re.escape(t) for t in triggers) + r")\.?[:,]?\s+)"
+        r"(?<![A-Za-z])(?:(?i:" + "|".join(re.escape(t) for t in triggers) + r")\.?[:,]?\s+)"
         r"(" + NAME_TOKEN + r"(?:\s+" + NAME_TOKEN + r"){0,2})(?![\w@])")
 
 
@@ -81,7 +81,7 @@ NAME_CTX = build_name_ctx(NAME_TRIGGERS)
 # resume / signature header: "Kavya Menon | kavya@mail.com | 99887 76655" (name at line start, contact data after it)
 NAME_HEADER = re.compile(r"(?m)^[ \t]*(" + NAME_TOKEN + r"(?:\s+" + NAME_TOKEN + r"){1,2})[ \t]*[|,–-][ \t]*(?:\S+@|\+?\d|\(\d)")
 # sign-off typed in lower case: "thanks, regards sarah connor"
-LOWER_SIGNOFF = re.compile(r"(?m)(?:regards|sincerely|cheers|thanks|my name is)[,:]?[ \t]+([a-z]{2,}[ \t]+[a-z]{2,})[ \t]*$")
+LOWER_SIGNOFF = re.compile(r"(?m)\b(?:regards|sincerely|cheers|thanks|my name is)[,:]?[ \t]+([a-z]{2,}[ \t]+[a-z]{2,})[ \t]*$")
 LOWER_STOP = {"a", "an", "the", "for", "so", "much", "again", "lot", "you", "all", "in", "advance", "guys", "team",
               "everyone", "very", "to", "and", "your", "help", "it", "that", "this", "now", "then", "soon", "sir"}
 IPV4_RE = re.compile(r"(?<![\d.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\d.])")
